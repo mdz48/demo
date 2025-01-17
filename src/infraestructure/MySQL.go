@@ -16,7 +16,6 @@ func NewMySQL() *MySQL {
 }
 
 func (m *MySQL) Save(product domain.Product) {
-	// Simulacion
 	m.products = append(m.products, product)
 	fmt.Println("Guardando en MySQL")
 }

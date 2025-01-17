@@ -1,19 +1,19 @@
 package domain
 
 type Product struct {
-	id    int32
-	name  string
-	price float32
+	Id    int32
+	Name  string
+	Price float32
 }
 
 func NewProduct(name string, price float32) *Product {
-	return &Product{id: 1, name: name, price: price}
+	return &Product{Id: 1, Name: name, Price: price}
 }
 
 func (p *Product) GetName() string {
-	return p.name
+	return p.Name
 }
 
 func (p *Product) SetName(name string) {
-	p.name = name
+	p.Name = name
 }

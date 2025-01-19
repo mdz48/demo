@@ -9,13 +9,17 @@ type Router struct {
     engine *gin.Engine
     productController      *controllers.ProductController
     viewProductsController *controllers.ViewProductsController
+    updateProductController *controllers.UpdateProductController
+    deleteProductController *controllers.DeleteProductController
 }
 
-func NewRouter(productController *controllers.ProductController, viewProductsController *controllers.ViewProductsController) *Router {
+func NewRouter(productController *controllers.ProductController, viewProductsController *controllers.ViewProductsController, updateProductController *controllers.UpdateProductController, deleteProductController *controllers.DeleteProductController) *Router {
     return &Router{
         engine:                gin.Default(),
         productController:     productController,
         viewProductsController: viewProductsController,
+        updateProductController: updateProductController,
+        deleteProductController: deleteProductController,
     }
 }
 
@@ -25,6 +29,8 @@ func (r *Router) SetupRoutes() {
     {
         products.POST("", r.productController.Create)
         products.GET("", r.viewProductsController.View)
+        products.PUT("", r.updateProductController.Update)
+        products.DELETE("/:id", r.deleteProductController.Delete)
     }
 }
 

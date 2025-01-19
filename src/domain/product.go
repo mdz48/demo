@@ -17,3 +17,12 @@ func (p *Product) GetName() string {
 func (p *Product) SetName(name string) {
 	p.Name = name
 }
+
+func (p *Product) UpdateProduct(name string, price float32) {
+	p.Name = name
+	p.Price = price
+}
+
+func (p *Product) GetID() int32 {
+	return p.Id
+}

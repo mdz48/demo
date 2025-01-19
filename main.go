@@ -16,9 +16,15 @@ func main() {
     // Cada controlador necesita su propio caso de uso, es necesario instanciar cada vez?
     viewUseCase := application.NewUseCaseCreate(db)
     viewProductsController := controllers.NewViewProductsController(viewUseCase)
+    updateUseCase := application.NewUseCaseUpdate(db)
+    updateProductController := controllers.NewUpdateProductController(updateUseCase)
+    
+    deleteUseCase := application.NewUseCaseDelete(db)
+    deleteProductController := controllers.NewDeleteProductController(deleteUseCase)
+
 
     // Configurar rutas
-    r := routes.NewRouter(productController, viewProductsController)
+    r := routes.NewRouter(productController, viewProductsController, updateProductController, deleteProductController)
     r.SetupRoutes()
     
     // En donde irá mi archivo de rutas?

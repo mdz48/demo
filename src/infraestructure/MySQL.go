@@ -76,12 +76,25 @@ func (m *MySQL) GetAll() []domain.Product {
 	return products
 }
 
-func (m *MySQL) Update(product domain.Product) (domain.Product, error) {
-	_, err := m.db.Exec("UPDATE products SET name = ?, price = ? WHERE id = ?", product.Name, product.Price, product.Id)
+func (m *MySQL) GetByID(id int32) (domain.Product, error) {
+	row := m.db.QueryRow("SELECT * FROM products WHERE id = ?", id)
+	var product domain.Product
+	err := row.Scan(&product.Id, &product.Name, &product.Price)
 	if err != nil {
 		return domain.Product{}, err
 	}
-	fmt.Println("Producto actualizado en MySQL")
+	return product, nil
+}
+
+func (m *MySQL) Update(product domain.Product) (domain.Product, error) {
+	result, err := m.db.Exec("UPDATE products SET name = ?, price = ? WHERE id = ?", product.Name, product.Price, product.Id)
+	if err != nil {
+		return domain.Product{}, err
+	}
+	_, err = result.RowsAffected()
+	if err != nil {
+		return domain.Product{}, err
+	}
 	return product, nil
 }
 

@@ -29,7 +29,7 @@ func (r *Router) SetupRoutes() {
     {
         products.POST("", r.productController.Create)
         products.GET("", r.viewProductsController.View)
-        products.PUT("", r.updateProductController.Update)
+        products.PUT("/:id", r.updateProductController.Update)
         products.DELETE("/:id", r.deleteProductController.Delete)
     }
 }

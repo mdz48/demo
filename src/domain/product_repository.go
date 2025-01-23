@@ -6,4 +6,5 @@ type IProduct interface {
 	GetAll() []Product
 	Update(product Product) (Product, error)
 	Delete(id int32) (int64, error)
+	GetByID(id int32) (Product, error)
 }

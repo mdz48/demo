@@ -2,6 +2,7 @@ package main
 
 import (
 	"demo/src/application"
+	"demo/src/core"
 	"demo/src/infraestructure"
 	"demo/src/infraestructure/controllers"
 	"demo/src/infraestructure/routes"
@@ -10,7 +11,8 @@ import (
 
 func main() {
     // Crear instancias
-    db := infraestructure.NewMySQL()
+    database := core.NewDatabase()
+    db := infraestructure.NewMySQL(database.Conn)
     createUseCase := application.NewCreateUseCase(db)
     productController := controllers.NewProductController(createUseCase)
     // Cada controlador necesita su propio caso de uso, es necesario instanciar cada vez?

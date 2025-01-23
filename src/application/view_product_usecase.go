@@ -18,6 +18,6 @@ func NewUseCaseCreate(db domain.IProduct) *ViewUseCase {
 func (uc *ViewUseCase) Run() {
 	products := uc.db.GetAll()
 	for _, product := range products {
-		fmt.Println(product.GetName())
+		fmt.Println(product)
 	}
 }

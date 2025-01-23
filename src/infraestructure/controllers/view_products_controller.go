@@ -19,6 +19,6 @@ func NewViewProductsController(getAllProductsUseCase *application.ViewUseCase) *
 
 func (pc *ViewProductsController) View(c *gin.Context) {
 	fmt.Println("Obteniendo productos")
-	pc.getAllProductsUseCase.Run()
-	c.JSON(http.StatusOK, gin.H{"message": "Productos obtenidos correctamente"})
+	products := pc.getAllProductsUseCase.Run()
+	c.JSON(http.StatusOK, gin.H{ "data" : products})
 }

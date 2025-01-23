@@ -12,7 +12,8 @@ func NewUseCaseUpdate(db domain.IProduct) *UpdateUseCase {
 	return &UpdateUseCase{db:db}
 }
 
-func (uc *UpdateUseCase) Run(product domain.Product) {
+func (uc *UpdateUseCase) Run(product domain.Product) domain.Product {
 	uc.db.Update(product)
+	return product
 }
 

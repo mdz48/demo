@@ -10,7 +10,8 @@ func NewCreateUseCase(db domain.IProduct) *CreateProductUseCase {
 	return &CreateProductUseCase{db: db}
 }
 
-func (uc *CreateProductUseCase) Run(product domain.Product) {
-	uc.db.Save(product)
+func (uc *CreateProductUseCase) Run(product domain.Product) domain.Product {
+	product, _ = uc.db.Save(product)
+	return product
 }
 

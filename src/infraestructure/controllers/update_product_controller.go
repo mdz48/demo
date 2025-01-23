@@ -3,7 +3,6 @@ package controllers
 import (
 	"demo/src/application"
 	"demo/src/domain"
-	"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
 )
@@ -22,7 +21,6 @@ func (pc *UpdateProductController) Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("Actualizando producto", product) // Ahora imprime el producto después de la vinculación
 	pc.updateProductUseCase.Run(product)
-	c.JSON(http.StatusOK, gin.H{"message": "Product updated successfully"})
+	c.JSON(http.StatusOK, gin.H{"data": product})
 }

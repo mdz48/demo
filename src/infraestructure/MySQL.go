@@ -41,16 +41,24 @@ func NewMySQL() *MySQL {
 	}
 }
 
-func (m *MySQL) Save(product domain.Product) {
-	_, err := m.db.Exec("INSERT INTO products (name, price) VALUES (?, ?)", product.Name, product.Price)
+func (m *MySQL) Save(product domain.Product) (domain.Product, error) {
+	result, err := m.db.Exec("INSERT INTO products (name, price) VALUES (?, ?)", product.Name, product.Price)
 	if err != nil {
-		log.Fatal(err)
+		return domain.Product{}, err
 	}
+	id, err := result.LastInsertId()
+	if err != nil {
+		return domain.Product{}, err
+	}
+	product.Id = int32(id)
+	product = domain.Product{Id: int32(id), Name: product.Name, Price: product.Price}
+
 	fmt.Println("Producto guardado en MySQL")
+	return product, nil
 }
 
 func (m *MySQL) GetAll() []domain.Product {
-	rows, err := m.db.Query("SELECT id, name, price FROM products")
+	rows, err := m.db.Query("SELECT * FROM products")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,7 +67,8 @@ func (m *MySQL) GetAll() []domain.Product {
 	var products []domain.Product
 	for rows.Next() {
 		var product domain.Product
-		if err := rows.Scan(&product.Id, &product.Name, &product.Price); err != nil {
+		err := rows.Scan(&product.Id, &product.Name, &product.Price)
+		if err != nil {
 			log.Fatal(err)
 		}
 		products = append(products, product)
@@ -67,18 +76,23 @@ func (m *MySQL) GetAll() []domain.Product {
 	return products
 }
 
-func (m *MySQL) Update(product domain.Product) {
+func (m *MySQL) Update(product domain.Product) (domain.Product, error) {
 	_, err := m.db.Exec("UPDATE products SET name = ?, price = ? WHERE id = ?", product.Name, product.Price, product.Id)
 	if err != nil {
-		log.Fatal(err)
+		return domain.Product{}, err
 	}
 	fmt.Println("Producto actualizado en MySQL")
+	return product, nil
 }
 
-func (m *MySQL) Delete(id int32) {
-	_, err := m.db.Exec("DELETE FROM products WHERE id = ?", id)
+func (m *MySQL) Delete(id int32) (int64, error) {
+	result, err := m.db.Exec("DELETE FROM products WHERE id = ?", id)
 	if err != nil {
-		log.Fatal(err)
+		return 0, err
 	}
-	fmt.Println("Producto eliminado de MySQL")
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+	return rows, nil
 }

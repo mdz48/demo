@@ -2,8 +2,8 @@ package domain
 
 
 type IProduct interface {
-	Save(product Product)
+	Save(product Product) (Product, error)
 	GetAll() []Product
-	Update(product Product)
-	Delete(id int32)
+	Update(product Product) (Product, error)
+	Delete(id int32) (int64, error)
 }

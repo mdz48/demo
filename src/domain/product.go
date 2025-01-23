@@ -7,7 +7,7 @@ type Product struct {
 }
 
 func NewProduct(name string, price float32) *Product {
-	return &Product{Id: 1, Name: name, Price: price}
+	return &Product{Name: name, Price: price}
 }
 
 func (p *Product) GetName() string {

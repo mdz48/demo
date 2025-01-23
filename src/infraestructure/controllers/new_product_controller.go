@@ -3,7 +3,6 @@ package controllers
 import (
 	"demo/src/application"
 	"demo/src/domain"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +22,6 @@ func (pc *ProductController) Create(c *gin.Context) {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
     }
-    fmt.Println("Creando producto", product) // Ahora imprime el producto después de la vinculación
-    pc.createProductUseCase.Run(product)
-    c.JSON(http.StatusOK, gin.H{"message": "Product created successfully"})
+    p := pc.createProductUseCase.Run(product)
+    c.JSON(http.StatusOK, gin.H{"data" : p})
 }

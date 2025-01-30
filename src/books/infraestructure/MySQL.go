@@ -94,3 +94,22 @@ func (m *MySQL) Delete(id int32) (int64, error) {
 	}
 	return result.RowsAffected()
 }
+
+func (m *MySQL) GetBooksByAuthor(authorId int32) ([]domain.Book, error) {
+    rows, err := m.db.Query("SELECT * FROM books WHERE author = ?", authorId)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    var books []domain.Book
+    for rows.Next() {
+        var book domain.Book
+        err := rows.Scan(&book.Id, &book.Title, &book.Author, &book.Description)
+        if err != nil {
+            return nil, err
+        }
+        books = append(books, book)
+    }
+    return books, nil
+}

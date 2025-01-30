@@ -1,20 +1,20 @@
 package infraestructure
 
 import (
-    "database/sql"
-    "demo/src/domain"
-    "fmt"
+	"database/sql"
+	"demo/src/products/domain"
+	"fmt"
 	"log"
 )
 
 type MySQL struct {
-    db *sql.DB
+	db *sql.DB
 }
 
 func NewMySQL(db *sql.DB) *MySQL {
-    return &MySQL{
-        db: db,
-    }
+	return &MySQL{
+		db: db,
+	}
 }
 
 func (m *MySQL) Save(product domain.Product) (domain.Product, error) {

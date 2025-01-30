@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"demo/src/application"
+	"demo/src/products/application"
 	"fmt"
 	"net/http"
 

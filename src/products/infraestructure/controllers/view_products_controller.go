@@ -1,7 +1,8 @@
 package controllers
 
 import (
-	"demo/src/application"
+	"demo/src/products/application"
+
 	// "demo/src/domain"
 	"fmt"
 	"net/http"
@@ -20,5 +21,5 @@ func NewViewProductsController(getAllProductsUseCase *application.ViewUseCase) *
 func (pc *ViewProductsController) View(c *gin.Context) {
 	fmt.Println("Obteniendo productos")
 	products := pc.getAllProductsUseCase.Run()
-	c.JSON(http.StatusOK, gin.H{ "data" : products})
+	c.JSON(http.StatusOK, gin.H{"data": products})
 }

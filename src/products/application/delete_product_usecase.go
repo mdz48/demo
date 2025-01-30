@@ -1,15 +1,15 @@
 package application
 
 import (
-	"demo/src/domain"
+	"demo/src/products/domain"
 )
 
-type DeleteUseCase struct{
+type DeleteUseCase struct {
 	db domain.IProduct
 }
 
 func NewUseCaseDelete(db domain.IProduct) *DeleteUseCase {
-	return &DeleteUseCase{db:db}
+	return &DeleteUseCase{db: db}
 }
 
 func (uc *DeleteUseCase) Run(id int32) (int64, error) {

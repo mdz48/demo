@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"demo/src/application"
-	"demo/src/domain"
-	"net/http"
-	"github.com/gin-gonic/gin"
+	"demo/src/products/application"
+	"demo/src/products/domain"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type UpdateProductController struct {
@@ -32,13 +32,13 @@ func (pc *UpdateProductController) Update(c *gin.Context) {
 
 	result, err := pc.updateProductUseCase.Run(id, product)
 	if err != nil {
-        if err.Error() == "product not found" {
-            c.JSON(http.StatusNotFound, gin.H{"error": "Producto no encontrado"})
-        } else {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al actualizar el producto"})
-        }
-        return
-    }
+		if err.Error() == "product not found" {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Producto no encontrado"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al actualizar el producto"})
+		}
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }

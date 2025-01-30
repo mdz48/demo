@@ -31,11 +31,21 @@ func NewDatabase() *Database {
     if err != nil {
         log.Fatal(err)
     }
+
+    conn.SetMaxOpenConns(10)
+
     if err := conn.Ping(); err != nil {
         log.Fatal(err)
     }
 
+    
+
     return &Database{
         Conn: conn,
     }
+}
+
+// Get the database connection
+func (d *Database) GetConn() *sql.DB {
+    return d.Conn
 }

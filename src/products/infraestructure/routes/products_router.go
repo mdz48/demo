@@ -13,7 +13,7 @@ type Router struct {
 	deleteProductController *controllers2.DeleteProductController
 }
 
-func NewRouter(productController *controllers2.ProductController, viewProductsController *controllers2.ViewProductsController, updateProductController *controllers2.UpdateProductController, deleteProductController *controllers2.DeleteProductController) *Router {
+func NewRouter(engine *gin.Engine,productController *controllers2.ProductController, viewProductsController *controllers2.ViewProductsController, updateProductController *controllers2.UpdateProductController, deleteProductController *controllers2.DeleteProductController) *Router {
 	return &Router{
 		engine:                  gin.Default(),
 		productController:       productController,

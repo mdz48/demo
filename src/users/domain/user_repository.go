@@ -6,4 +6,5 @@ type IUser interface {
 	Update(id int32 , user User) (User, error)
 	Delete(id int32) (int64, error)
 	GetByID(id int32) (User, error)
+	Login(email string, password string) (bool, error)
 }

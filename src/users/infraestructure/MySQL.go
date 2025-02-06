@@ -78,13 +78,13 @@ func (m *MySQL) Delete(id int32) (int64, error) {
 	return result.RowsAffected()
 }
 
-func (m *MySQL) Login(email string, password string) (bool, error) {
-	row := m.db.QueryRow("SELECT * FROM users WHERE email = ? AND password = ?", email, password)
-	var user domain.User
-	err := row.Scan(&user.Id, &user.Name, &user.Email, &user.Password)
+func (m *MySQL) Login(email string, password string) (domain.LoginResponse, error) {
+	row := m.db.QueryRow("SELECT id, name, email FROM users WHERE email = ? AND password = ?", email, password)
+	var login domain.LoginResponse
+	err := row.Scan(&login.Id, &login.Name, &login.Email)
 	if err != nil {
-		return false, err
+		return domain.LoginResponse{}, err
 	}
-	return true, nil
+	return login, nil
 }
 

@@ -20,5 +20,5 @@ func (vc *ViewBooksController) View(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener los libros"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": books})
+	c.JSON(http.StatusOK, books)
 }

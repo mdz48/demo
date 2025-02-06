@@ -10,6 +10,6 @@ func NewViewBooksByAuthorUseCase(db domain.IBook) *ViewBooksByAuthorUseCase {
 	return &ViewBooksByAuthorUseCase{db: db}
 }
 
-func (uc *ViewBooksByAuthorUseCase) Run(authorId int32) ([]domain.Book, error) {
+func (uc *ViewBooksByAuthorUseCase) Run(authorId int32) ([]domain.BookWithAuthor, error) {
 	return uc.db.GetBooksByAuthor(authorId)
 }

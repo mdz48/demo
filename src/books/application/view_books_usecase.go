@@ -12,6 +12,6 @@ func NewUseCaseViewBooks(bookRepository domain.IBook) *ViewBooksUseCase {
 	return &ViewBooksUseCase{bookRepository: bookRepository}
 }
 
-func (uc *ViewBooksUseCase) Run() ([]domain.Book, error) {
+func (uc *ViewBooksUseCase) Run() ([]domain.BookWithAuthor, error) {
 	return uc.bookRepository.GetAll()
 }

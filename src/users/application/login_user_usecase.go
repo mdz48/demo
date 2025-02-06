@@ -10,6 +10,6 @@ func NewUseCaseLogin(db domain.IUser) *LoginUserUseCase {
 	return &LoginUserUseCase{db: db}
 }
 
-func (u *LoginUserUseCase) Login(email string, password string) (bool, error) {
+func (u *LoginUserUseCase) Login(email string, password string) (domain.LoginResponse, error) {
 	return u.db.Login(email, password)
 }

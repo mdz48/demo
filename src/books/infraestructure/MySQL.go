@@ -49,23 +49,33 @@ func (m *MySQL) Save(book domain.Book) (domain.Book, error) {
 	return book, nil
 }
 
-func (m *MySQL) GetAll() ([]domain.Book, error) {
-	rows, err := m.db.Query("SELECT * FROM books")
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
+func (m *MySQL) GetAll() ([]domain.BookWithAuthor, error) {
+    query := `
+        SELECT b.id, b.title, b.description, a.id as author_id, a.name as author_name 
+        FROM books b 
+        INNER JOIN users a ON b.author = a.id
+    `
+    rows, err := m.db.Query(query)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
 
-	var books []domain.Book
-	for rows.Next() {
-		var book domain.Book
-		err := rows.Scan(&book.Id, &book.Title, &book.Author, &book.Description)
-		if err != nil {
-			panic(err)
-		}
-		books = append(books, book)
-	}
-	return books, nil
+    var books []domain.BookWithAuthor
+    for rows.Next() {
+        var book domain.BookWithAuthor
+        err := rows.Scan(&book.Id, &book.Title, &book.Description, &book.AuthorId, &book.AuthorName)
+        if err != nil {
+            return nil, err
+        }
+        books = append(books, book)
+    }
+
+    if err = rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return books, nil
 }
 
 func (m *MySQL) GetByID(id int32) (domain.Book, error) {
@@ -95,21 +105,32 @@ func (m *MySQL) Delete(id int32) (int64, error) {
 	return result.RowsAffected()
 }
 
-func (m *MySQL) GetBooksByAuthor(authorId int32) ([]domain.Book, error) {
-    rows, err := m.db.Query("SELECT * FROM books WHERE author = ?", authorId)
+func (m *MySQL) GetBooksByAuthor(authorId int32) ([]domain.BookWithAuthor, error) {
+    query := `
+        SELECT b.id, b.title, b.description, a.id as author_id, a.name as author_name 
+        FROM books b 
+        INNER JOIN users a ON b.author = a.id 
+        WHERE b.author = ?
+    `
+    rows, err := m.db.Query(query, authorId)
     if err != nil {
         return nil, err
     }
     defer rows.Close()
 
-    var books []domain.Book
+    var books []domain.BookWithAuthor
     for rows.Next() {
-        var book domain.Book
-        err := rows.Scan(&book.Id, &book.Title, &book.Author, &book.Description)
+        var book domain.BookWithAuthor
+        err := rows.Scan(&book.Id, &book.Title, &book.Description, &book.AuthorId, &book.AuthorName)
         if err != nil {
             return nil, err
         }
         books = append(books, book)
     }
+
+    if err = rows.Err(); err != nil {
+        return nil, err
+    }
+
     return books, nil
 }

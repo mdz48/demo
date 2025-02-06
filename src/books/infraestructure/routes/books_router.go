@@ -2,26 +2,29 @@ package routes
 
 import (
 	booksControllers "demo/src/books/infraestructure/controllers"
+
 	"github.com/gin-gonic/gin"
 )
 
 type BookRouter struct {
-	engine         *gin.Engine
-	bookController *booksControllers.BookController
-	deleteBookController *booksControllers.DeleteBookController
-	updateBookController *booksControllers.UpdateBookController
-	viewBooksController *booksControllers.ViewBooksController
+	engine                      *gin.Engine
+	bookController              *booksControllers.BookController
+	deleteBookController        *booksControllers.DeleteBookController
+	updateBookController        *booksControllers.UpdateBookController
+	viewBooksController         *booksControllers.ViewBooksController
 	viewBooksByAuthorController *booksControllers.ViewBooksByAuthorController
+	addFavoriteBookController   *booksControllers.AddFavoriteBookController
 }
 
-func NewBookRouter(engine *gin.Engine, bookController *booksControllers.BookController, deleteBookController *booksControllers.DeleteBookController, updateBookController *booksControllers.UpdateBookController, viewBooksController *booksControllers.ViewBooksController, viewBooksByAuthorController *booksControllers.ViewBooksByAuthorController) *BookRouter {
+func NewBookRouter(engine *gin.Engine, bookController *booksControllers.BookController, deleteBookController *booksControllers.DeleteBookController, updateBookController *booksControllers.UpdateBookController, viewBooksController *booksControllers.ViewBooksController, viewBooksByAuthorController *booksControllers.ViewBooksByAuthorController, addFavoriteBookController *booksControllers.AddFavoriteBookController) *BookRouter {
 	return &BookRouter{
-		engine:         engine,
-		bookController: bookController,
-		deleteBookController: deleteBookController,
-		updateBookController: updateBookController,
-		viewBooksController: viewBooksController,
+		engine:                      engine,
+		bookController:              bookController,
+		deleteBookController:        deleteBookController,
+		updateBookController:        updateBookController,
+		viewBooksController:         viewBooksController,
 		viewBooksByAuthorController: viewBooksByAuthorController,
+		addFavoriteBookController:   addFavoriteBookController,
 	}
 }
 
@@ -33,6 +36,11 @@ func (r *BookRouter) SetupRoutes() {
 		books.DELETE("/:id", r.deleteBookController.Delete)
 		books.PUT("/:id", r.updateBookController.Update)
 		books.GET("/author/:authorId", r.viewBooksByAuthorController.View)
+
+		favorites := books.Group("/favorites")
+		{
+			favorites.POST("", r.addFavoriteBookController.Add)
+		}
 	}
 }
 

@@ -12,6 +12,7 @@ type UserRouter struct {
     deleteUserController *usersControllers.DeleteUsersController
     updateUserController *usersControllers.UpdateUserController
     loginUserController *usersControllers.LoginUserController
+    
 
 }
 

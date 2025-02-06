@@ -7,4 +7,5 @@ type IBook interface {
 	Delete(id int32) (int64, error)
 	GetAll() ([]BookWithAuthor, error)
 	GetBooksByAuthor(authorId int32) ([]BookWithAuthor, error)
+    AddFavoriteBook(userId int32, bookId int32) (int64, error)
 }

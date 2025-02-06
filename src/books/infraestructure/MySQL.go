@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"demo/src/books/domain"
 	"fmt"
+	"strings"
 )
 
 type MySQL struct {
@@ -133,4 +134,15 @@ func (m *MySQL) GetBooksByAuthor(authorId int32) ([]domain.BookWithAuthor, error
     }
 
     return books, nil
+}
+
+func (m *MySQL) AddFavoriteBook(userId int32, bookId int32) (int64, error) {
+    result, err := m.db.Exec("INSERT INTO favorite_books (user_id, book_id) VALUES (?, ?)", userId, bookId)
+    if err != nil {
+        if strings.Contains(err.Error(), "Duplicate entry") {
+            return 0, fmt.Errorf("el libro ya está en favoritos")
+        }
+        return 0, err
+    }
+    return result.RowsAffected()
 }

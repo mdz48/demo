@@ -78,9 +78,13 @@ func (d *Dependencies) Run() error {
     viewBooksByAuthorController := booksControllers.NewViewAuthorByUserController(viewBooksByAuthorUseCase)
 	addFavoriteBookUseCase := booksUseCases.NewAddFavoriteBookUseCase(dbBooks)
 	addFavoriteBookController := booksControllers.NewAddFavoriteBookController(addFavoriteBookUseCase)
+	viewFavoritesUseCase := booksUseCases.NewGetFavoritesUseCase(dbBooks)
+	viewFavoritesController := booksControllers.NewViewFavoritesController(viewFavoritesUseCase)
+	deleteFavoriteBookUseCase := booksUseCases.NewDeleteFavoriteUseCase(dbBooks)
+	deleteFavoriteBookController := booksControllers.NewDeleteFavoriteController(deleteFavoriteBookUseCase)
 
 	// Configurar rutas de libros
-	booksRouter := booksRoutes.NewBookRouter(d.engine, bookController, deleteBookController, updateBookController, viewBooksController, viewBooksByAuthorController, addFavoriteBookController)
+	booksRouter := booksRoutes.NewBookRouter(d.engine, bookController, deleteBookController, updateBookController, viewBooksController, viewBooksByAuthorController, addFavoriteBookController, viewFavoritesController, deleteFavoriteBookController)
 	booksRouter.SetupRoutes()
 
 	return d.engine.Run()

@@ -59,9 +59,11 @@ func (d *Dependencies) Run() error {
 	updateUserController := usersControllers.NewUpdateUserController(updateUserUseCase)
 	loginUserUseCase := usersUseCases.NewUseCaseLogin(usersDatabase)
 	loginUserController := usersControllers.NewLoginUserController(loginUserUseCase)
+	getOneUserUseCase := usersUseCases.NewViewOneUserUseCase(usersDatabase)
+	viewOneUserController := usersControllers.NewViewOneUserController(getOneUserUseCase)
 
 	// Configurar rutas de usuarios
-	usersRouter := usersRoutes.NewUserRouter(d.engine, userController, viewUserController, deleteUserController, updateUserController, loginUserController)
+	usersRouter := usersRoutes.NewUserRouter(d.engine, userController, viewUserController, deleteUserController, updateUserController, loginUserController, viewOneUserController)
 	usersRouter.SetupRoutes()
 
 	// Books setup

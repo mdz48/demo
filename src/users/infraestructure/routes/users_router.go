@@ -12,11 +12,11 @@ type UserRouter struct {
     deleteUserController *usersControllers.DeleteUsersController
     updateUserController *usersControllers.UpdateUserController
     loginUserController *usersControllers.LoginUserController
-    
+    viewOneUserController *usersControllers.ViewOneUserController
 
 }
 
-func NewUserRouter(engine *gin.Engine,userController *usersControllers.UserController, viewUserController *usersControllers.ViewUsersController, deleteUserController *usersControllers.DeleteUsersController, updateUserController *usersControllers.UpdateUserController, loginUserController *usersControllers.LoginUserController) *UserRouter {
+func NewUserRouter(engine *gin.Engine,userController *usersControllers.UserController, viewUserController *usersControllers.ViewUsersController, deleteUserController *usersControllers.DeleteUsersController, updateUserController *usersControllers.UpdateUserController, loginUserController *usersControllers.LoginUserController, viewOneUserController *usersControllers.ViewOneUserController ) *UserRouter {
     return &UserRouter{
         engine:         engine,
         userController: userController,
@@ -24,14 +24,16 @@ func NewUserRouter(engine *gin.Engine,userController *usersControllers.UserContr
         deleteUserController: deleteUserController,
         updateUserController: updateUserController,
         loginUserController: loginUserController,
+        viewOneUserController: viewOneUserController,
     }
 }
 
 func (r *UserRouter) SetupRoutes() {
     users := r.engine.Group("/users")
     {
-        users.POST("", r.userController.Create)
-        users.GET("", r.viewUserController.View)
+        users.POST("/", r.userController.Create)
+        users.GET("/", r.viewUserController.View)
+        users.GET("/:id", r.viewOneUserController.ViewOne)
         users.DELETE("/:id", r.deleteUserController.Delete)
         users.PUT("/:id", r.updateUserController.Update)
     

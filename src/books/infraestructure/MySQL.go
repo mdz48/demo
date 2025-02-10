@@ -146,3 +146,42 @@ func (m *MySQL) AddFavoriteBook(userId int32, bookId int32) (int64, error) {
     }
     return result.RowsAffected()
 }
+
+func (m *MySQL) GetFavoriteBooks(userId int32) ([]domain.BookWithAuthor, error) {
+    query := `
+        SELECT b.id, b.title, b.description, a.id as author_id, a.name as author_name 
+        FROM books b 
+        INNER JOIN favorite_books fb ON b.id = fb.book_id
+        INNER JOIN users a ON b.author = a.id
+        WHERE fb.user_id = ?
+    `
+    rows, err := m.db.Query(query, userId)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    var books []domain.BookWithAuthor
+    for rows.Next() {
+        var book domain.BookWithAuthor
+        err := rows.Scan(&book.Id, &book.Title, &book.Description, &book.AuthorId, &book.AuthorName)
+        if err != nil {
+            return nil, err
+        }
+        books = append(books, book)
+    }
+
+    if err = rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return books, nil
+}
+
+func (m *MySQL) DeleteFavoriteBook(userId int32, bookId int32) (int64, error) {
+    result, err := m.db.Exec("DELETE FROM favorite_books WHERE user_id = ? AND book_id = ?", userId, bookId)
+    if err != nil {
+        return 0, err
+    }
+    return result.RowsAffected()
+}

@@ -3,7 +3,7 @@ package controllers
 import (
 	"demo/src/books/application"
 	"demo/src/books/domain"
-	// "fmt"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -20,6 +20,7 @@ func NewAddFavoriteBookController(addFavoriteBookUseCase *application.AddFavorit
 
 func (c *AddFavoriteBookController) Add(g *gin.Context) {
     var request domain.FavoriteBookRequest
+    fmt.Println(request)
     if err := g.ShouldBindJSON(&request); err != nil {
         g.JSON(http.StatusBadRequest, gin.H{"error": "Datos inválidos"})
         return

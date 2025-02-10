@@ -14,9 +14,11 @@ type BookRouter struct {
 	viewBooksController         *booksControllers.ViewBooksController
 	viewBooksByAuthorController *booksControllers.ViewBooksByAuthorController
 	addFavoriteBookController   *booksControllers.AddFavoriteBookController
+	viewFavoriteBooksController *booksControllers.ViewFavoritesController
+	deleteFavoriteBookController *booksControllers.DeleteFavoriteController
 }
 
-func NewBookRouter(engine *gin.Engine, bookController *booksControllers.BookController, deleteBookController *booksControllers.DeleteBookController, updateBookController *booksControllers.UpdateBookController, viewBooksController *booksControllers.ViewBooksController, viewBooksByAuthorController *booksControllers.ViewBooksByAuthorController, addFavoriteBookController *booksControllers.AddFavoriteBookController) *BookRouter {
+func NewBookRouter(engine *gin.Engine, bookController *booksControllers.BookController, deleteBookController *booksControllers.DeleteBookController, updateBookController *booksControllers.UpdateBookController, viewBooksController *booksControllers.ViewBooksController, viewBooksByAuthorController *booksControllers.ViewBooksByAuthorController, addFavoriteBookController *booksControllers.AddFavoriteBookController, viewFavoriteBooksController *booksControllers.ViewFavoritesController, deleteFavoriteBookController *booksControllers.DeleteFavoriteController) *BookRouter {
 	return &BookRouter{
 		engine:                      engine,
 		bookController:              bookController,
@@ -25,6 +27,8 @@ func NewBookRouter(engine *gin.Engine, bookController *booksControllers.BookCont
 		viewBooksController:         viewBooksController,
 		viewBooksByAuthorController: viewBooksByAuthorController,
 		addFavoriteBookController:   addFavoriteBookController,
+		viewFavoriteBooksController: viewFavoriteBooksController,
+		deleteFavoriteBookController: deleteFavoriteBookController,
 	}
 }
 
@@ -36,11 +40,9 @@ func (r *BookRouter) SetupRoutes() {
 		books.DELETE("/:id", r.deleteBookController.Delete)
 		books.PUT("/:id", r.updateBookController.Update)
 		books.GET("/author/:authorId", r.viewBooksByAuthorController.View)
-
-		favorites := books.Group("/favorites")
-		{
-			favorites.POST("", r.addFavoriteBookController.Add)
-		}
+		books.POST("/favorites", r.addFavoriteBookController.Add)
+		books.GET("/favorites/:userId", r.viewFavoriteBooksController.View)
+		books.DELETE("/favorites/:userId/:bookId", r.deleteFavoriteBookController.Delete)
 	}
 }
 

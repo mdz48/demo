@@ -1,20 +1,19 @@
 package main
 
 import (
-    // "github.com/gin-gonic/gin"
-    "github.com/gin-contrib/cors"
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
-    dependencies := NewDependencies()
-    
-    // Configurar CORS
-    config := cors.DefaultConfig()
-    config.AllowAllOrigins = true // Permitir todos los orígenes
-    // O puedes especificar orígenes permitidos
-    // config.AllowOrigins = []string{"http://localhost:4200"}
+	dependencies := NewDependencies()
 
-    dependencies.engine.Use(cors.New(config)) // Agregar middleware de CORS
+	// Configurar CORS
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true                                             // Permitir todos los orígenes
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"} // Permitir métodos
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"} // Permitir encabezados
 
-    dependencies.Run()
+	dependencies.engine.Use(cors.New(config)) // Agregar middleware de CORS
+
+	dependencies.Run()
 }
